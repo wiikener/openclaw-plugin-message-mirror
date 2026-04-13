@@ -77,7 +77,7 @@ This plugin is designed for teams who want to keep running the official OpenClaw
 
 - `index.js`: plugin runtime entry
 - `openclaw.plugin.json`: manifest + config schema
-- `examples/openclaw.plugin-config.json`: example `plugins.entries.message-mirror.config`
+- `examples/plugin-entry-example.json`: example `plugins.entries.message-mirror` config block
 - `examples/openclaw.local-example.json`: full local OpenClaw config example for a verified WebChat -> Feishu setup
 
 ## Install
