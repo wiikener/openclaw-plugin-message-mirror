@@ -37,6 +37,7 @@ Reusable native OpenClaw plugin for mirroring selected WebChat conversations to 
 - 发送链路使用 Feishu HTTP API
 - 去重状态文件默认写在 `~/.openclaw/plugins/message-mirror-state.json`
 - 建议在升级或修改逻辑前先执行 `npm run check` 和 `npm run pack:dry`
+- 当前“助手回复镜像”依赖 `before_message_write` 兼容 hook；如果后续升级 OpenClaw 后出现只同步用户消息、不再同步助手回复，优先检查这里
 
 长期维护建议：
 
@@ -150,6 +151,7 @@ Recommended rule for Control UI or WebChat usage:
 - Transport uses Feishu HTTP APIs via `curl`
 - Dedupe state is stored in `~/.openclaw/plugins/message-mirror-state.json`
 - Feishu-originated loopback traffic is hard-blocked to avoid duplicate mirrors
+- Assistant-reply mirroring currently depends on the `before_message_write` compatibility hook because the public WebChat outbound hooks were not reliable for final reply text in OpenClaw `2026.4.11`
 
 ## Verification
 

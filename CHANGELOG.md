@@ -8,3 +8,4 @@
 - Reuses `channels.feishu` credentials from the main OpenClaw config
 - Persists dedupe state locally
 - Includes hard guard against Feishu loopback duplication
+- Assistant reply mirroring is implemented via the `before_message_write` compatibility hook in OpenClaw `2026.4.11`
