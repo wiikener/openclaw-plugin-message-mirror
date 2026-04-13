@@ -172,6 +172,7 @@ This package can be copied to another machine and loaded by absolute path, or pu
 
 - Track changes in `CHANGELOG.md`
 - Track compatibility and operational caveats in `KNOWN_ISSUES.md`
+- See `docs/architecture.md` for message flow, hook selection, and upgrade-risk rationale
 - Use `npm run check` for syntax validation
 - Use `npm run pack:dry` before packaging or publishing
 - Keep `package.json` and `openclaw.plugin.json` versions aligned
