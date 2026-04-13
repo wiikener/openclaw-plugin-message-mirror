@@ -1,0 +1,35 @@
+{
+  "name": "openclaw-plugin-message-mirror",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Reusable OpenClaw native plugin for mirroring WebChat messages to Feishu",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "check": "node --check index.js",
+    "pack:dry": "npm pack --dry-run"
+  },
+  "exports": {
+    ".": "./index.js"
+  },
+  "keywords": [
+    "openclaw",
+    "openclaw-plugin",
+    "feishu",
+    "webchat",
+    "mirror"
+  ],
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "peerDependencies": {
+    "openclaw": "^2026.4.11"
+  },
+  "files": [
+    "index.js",
+    "openclaw.plugin.json",
+    "README.md",
+    "LICENSE",
+    "examples"
+  ]
+}

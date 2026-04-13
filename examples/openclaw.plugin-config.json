@@ -1,0 +1,23 @@
+{
+  "message-mirror": {
+    "enabled": true,
+    "config": {
+      "dryRun": false,
+      "rules": [
+        {
+          "id": "mirror-feishu-webchat",
+          "enabled": true,
+          "source": {
+            "match": "all-webchat"
+          },
+          "target": {
+            "channel": "feishu",
+            "to": "ou_8676cb57f25ac833dd11eda875dd7ae4"
+          },
+          "mirrorUser": true,
+          "mirrorAssistant": true
+        }
+      ]
+    }
+  }
+}

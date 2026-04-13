@@ -1,0 +1,60 @@
+{
+  "id": "message-mirror",
+  "name": "Message Mirror",
+  "description": "Mirror selected WebChat messages to Feishu",
+  "version": "0.1.0",
+  "activation": {
+    "onCapabilities": ["hook"]
+  },
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "dryRun": {
+        "type": "boolean"
+      },
+      "rules": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": { "type": "string" },
+            "enabled": { "type": "boolean" },
+            "source": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "match": {
+                  "type": "string",
+                  "enum": ["main", "webchat", "all-webchat", "exact"]
+                },
+                "sessionKeys": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                }
+              },
+              "required": ["match"]
+            },
+            "target": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "channel": {
+                  "type": "string",
+                  "enum": ["feishu"]
+                },
+                "to": { "type": "string" }
+              },
+              "required": ["channel", "to"]
+            },
+            "mirrorUser": { "type": "boolean" },
+            "mirrorAssistant": { "type": "boolean" }
+          },
+          "required": ["id", "source", "target"]
+        }
+      }
+    },
+    "required": ["rules"]
+  }
+}
