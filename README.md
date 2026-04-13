@@ -2,6 +2,17 @@
 
 Reusable native OpenClaw plugin for mirroring selected WebChat conversations to Feishu.
 
+This plugin is designed for teams who want to keep running the official OpenClaw release while adding a maintainable WebChat -> Feishu mirror as a standalone package.
+
+## What It Does
+
+- Mirrors WebChat user messages to Feishu
+- Mirrors assistant final replies to Feishu
+- Lets you scope mirroring with rule-based session matching
+- Reuses existing `channels.feishu` credentials from your main OpenClaw config
+- Persists local dedupe state to reduce duplicate sends
+- Hard-blocks Feishu loopback cases to avoid mirror storms
+
 ## Features
 
 - Mirrors WebChat user messages to Feishu
@@ -10,6 +21,12 @@ Reusable native OpenClaw plugin for mirroring selected WebChat conversations to 
 - Reuses `channels.feishu` credentials from your main OpenClaw config
 - Persists dedupe state locally
 - Includes a hard guard against Feishu direct-session loopback duplication
+
+## Use Cases
+
+- Mirror your Control UI or WebChat assistant conversation into a Feishu DM
+- Keep a human stakeholder updated in Feishu while continuing to operate from WebChat
+- Add message mirroring without patching OpenClaw core
 
 ## Package Layout
 
@@ -65,6 +82,11 @@ Enable the plugin entry:
 }
 ```
 
+Recommended rule for Control UI or WebChat usage:
+
+- Use `all-webchat` first
+- Use `exact` only when you want to restrict mirroring to explicit session keys
+
 ## Requirements
 
 - OpenClaw `2026.4.11` or newer
@@ -85,6 +107,14 @@ Enable the plugin entry:
 - Dedupe state is stored in `~/.openclaw/plugins/message-mirror-state.json`
 - Feishu-originated loopback traffic is hard-blocked to avoid duplicate mirrors
 
+## Verification
+
+After installation:
+
+1. Send a message from your WebChat session
+2. Confirm the configured Feishu recipient receives it
+3. Reply from Feishu and confirm the plugin does not mirror that reply back into Feishu again
+
 ## Reuse
 
 This package can be copied to another machine and loaded by absolute path, or published privately as a tarball/npm package if you want centralized distribution.
@@ -99,7 +129,7 @@ This package can be copied to another machine and loaded by absolute path, or pu
 
 ## 中文说明
 
-`message-mirror` 是一个面向 OpenClaw 的原生插件，用来把指定 WebChat 会话中的消息镜像到飞书。
+`message-mirror` 是一个面向 OpenClaw 的原生插件，用来把指定 WebChat 会话中的消息镜像到飞书，并尽量保持对官方 OpenClaw 版本零侵入。
 
 适用场景：
 
