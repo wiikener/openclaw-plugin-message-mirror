@@ -1,0 +1,65 @@
+{
+  "gateway": {
+    "mode": "local",
+    "auth": {
+      "mode": "token",
+      "token": "replace-with-your-local-gateway-token"
+    },
+    "port": 18789,
+    "bind": "loopback",
+    "tailscale": {
+      "mode": "off",
+      "resetOnExit": false
+    },
+    "controlUi": {
+      "allowedOrigins": [
+        "http://localhost:18789",
+        "http://127.0.0.1:18789"
+      ]
+    }
+  },
+  "session": {
+    "dmScope": "per-channel-peer"
+  },
+  "channels": {
+    "feishu": {
+      "enabled": true,
+      "streaming": true,
+      "appId": "replace-with-your-feishu-app-id",
+      "appSecret": "replace-with-your-feishu-app-secret"
+    }
+  },
+  "plugins": {
+    "load": {
+      "paths": [
+        "/absolute/path/to/openclaw-plugin-message-mirror"
+      ]
+    },
+    "entries": {
+      "feishu": {
+        "enabled": true
+      },
+      "message-mirror": {
+        "enabled": true,
+        "config": {
+          "dryRun": false,
+          "rules": [
+            {
+              "id": "mirror-feishu-main",
+              "enabled": true,
+              "source": {
+                "match": "all-webchat"
+              },
+              "target": {
+                "channel": "feishu",
+                "to": "replace-with-feishu-open-id"
+              },
+              "mirrorUser": true,
+              "mirrorAssistant": true
+            }
+          ]
+        }
+      }
+    }
+  }
+}
