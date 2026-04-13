@@ -189,19 +189,27 @@ function buildMirrorText(role, text) {
   return `${prefix}\n${text}`;
 }
 
-function resolveReplyText(event) {
+function resolveAssistantMessageText(message) {
+  if (!message || message.role !== "assistant") return "";
+
   const parts = [];
-  const ctx = event?.ctx;
-  if (ctx && typeof ctx === "object") {
-    if (typeof ctx.body === "string") parts.push(ctx.body);
-    if (typeof ctx.text === "string") parts.push(ctx.text);
-    if (Array.isArray(ctx.blocks)) {
-      for (const block of ctx.blocks) {
-        if (block && typeof block.text === "string") parts.push(block.text);
-      }
+  const seen = new Set();
+  const addPart = (value) => {
+    const normalized = normalizeText(value);
+    if (!normalized || seen.has(normalized)) return;
+    seen.add(normalized);
+    parts.push(normalized);
+  };
+
+  if (typeof message.content === "string") addPart(message.content);
+  if (Array.isArray(message.content)) {
+    for (const item of message.content) {
+      if (!item || typeof item !== "object") continue;
+      if (item.type === "text") addPart(item.text);
     }
   }
-  return normalizeText(parts.filter(Boolean).join("\n\n"));
+
+  return parts.join("\n\n");
 }
 
 async function sendMirror({ api, logger, target, text, idempotencyKey, role, dryRun }) {
@@ -315,17 +323,23 @@ export default definePluginEntry({
       });
     });
 
-    api.on("reply_dispatch", async (event) => {
-      const channel = normalizeText(event?.originatingChannel);
-      if (channel !== "webchat") return;
-      await mirror({
+    api.on("before_message_write", (event, ctx) => {
+      const sessionKey = normalizeText(ctx?.sessionKey || event?.sessionKey);
+      if (!isMainSession(sessionKey)) return undefined;
+
+      const text = resolveAssistantMessageText(event?.message);
+      if (!text) return undefined;
+
+      void mirror({
         role: "assistant",
-        sessionKey: event?.sessionKey,
-        channel,
-        text: resolveReplyText(event),
-        dedupeSeed: event?.runId || `${Date.now()}`,
-        originatingChannel: event?.originatingChannel,
+        sessionKey,
+        channel: "webchat",
+        text,
+        dedupeSeed: `${Date.now()}:${sessionKey}:${text}`,
+        originatingChannel: "webchat",
       });
+
+      return undefined;
     });
   },
 });
